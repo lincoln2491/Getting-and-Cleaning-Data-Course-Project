@@ -1,3 +1,4 @@
+library(dplyr)
 if(!file.exists("getdata_projectfiles_UCI HAR Dataset.zip")){
   download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip", 
                 destfile = "getdata_projectfiles_UCI HAR Dataset.zip", method = "curl")
@@ -38,5 +39,6 @@ df$labels =  with(activities,  activity_label[match(df$labels, id)])
 
 
 ag = aggregate(df[, -2:-1], list(df$subject, df$labels), mean)
+ag = rename(ag, person = Group.1, activity = Group.2)
 
 write.table(ag, row.names = FALSE, file = "tidy_data.txt")
